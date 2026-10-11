@@ -5,14 +5,12 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+  {
+    // Cache handler učitava Next izvan bundlera, kao CommonJS modul.
+    files: ["cache-handlers/**/*.js"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "db/migrations/**"]),
 ]);
 
 export default eslintConfig;
