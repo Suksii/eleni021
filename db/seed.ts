@@ -146,11 +146,7 @@ async function main() {
     ),
   );
 
-  await db.insert(schema.testimonials).values([
-    { author: "Milena R.", occasion: "Svadba", text: "Torta je bila centralni deo našeg venčanja — i izgledom i ukusom. Gosti i dalje pričaju o njoj.", rating: 5, sortOrder: 1 },
-    { author: "Nikola P.", occasion: "Rođendan", text: "Naručili smo Rainbow tortu za ćerkin rođendan. Brza komunikacija, tačna isporuka, savršen ukus.", rating: 5, sortOrder: 2 },
-    { author: "Agencija Luma", occasion: "Poslovni događaj", text: "Ketering za našu konferenciju bio je besprekoran. Sve sveže, lepo postavljeno i na vreme.", rating: 5, sortOrder: 3 },
-  ]);
+  // Utisci se ne seed-uju — izmišljeni utisci ne smeju na živi sajt; unose se u adminu.
 
   await db.insert(schema.settings).values(
     Object.entries({
