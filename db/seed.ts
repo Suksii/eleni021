@@ -9,6 +9,22 @@ const db = drizzle(neon(process.env.DATABASE_URL!), { schema });
 const u = (id: string) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=80`;
 
+// Prave fotografije sa Instagram profila eleni_021 (public/brand).
+const BRAND = {
+  cokoladnaTorta: "/brand/eleni-07.jpg",
+  kikirikiPoster: "/brand/eleni-02.jpg",
+  borovnica: "/brand/kolac-borovnica.jpg",
+  kruska: "/brand/kolac-kruska.jpg",
+  kruska2: "/brand/kolac-kruska-2.jpg",
+  malina: "/brand/kolac-malina.jpg",
+  mango: "/brand/kolac-mango.jpg",
+  rawBorovnica: "/brand/kolac-raw-borovnica.jpg",
+  kikiriki: "/brand/kolac-kikiriki.jpg",
+  komadniMix: "/brand/komadni-kolaci-mix.jpg",
+  posniSitni: "/brand/posni-sitni-kolaci.jpg",
+  praline: "/brand/praline.jpg",
+};
+
 const IMG = {
   // Torte
   chocCake: u("1578985545062-69928b1d9587"),
@@ -77,12 +93,13 @@ async function main() {
   const cats = await db
     .insert(schema.categories)
     .values([
-      { name: "Torte", slug: "torte", description: "Rođendanske, svečane i torte po želji — od klasika do modernih dizajna.", image: IMG.dripCake, sortOrder: 1 },
-      { name: "Kolači", slug: "kolaci", description: "Sitni kolači, tradicionalni i moderni, za svaku priliku.", image: IMG.tartlets, sortOrder: 2 },
-      { name: "Cheesecake", slug: "cheesecake", description: "Kremasti cheesecake u više ukusa, pečeni i nepečeni.", image: IMG.blueberryCheesecake, sortOrder: 3 },
-      { name: "Cupcakes & muffini", slug: "cupcakes-i-muffini", description: "Mali zalogaji sreće, idealni za proslave i poklone.", image: IMG.cupcakesMint, sortOrder: 4 },
-      { name: "Makarons", slug: "makarons", description: "Francuski makarons u pastelnim bojama i bogatim ukusima.", image: IMG.macarons, sortOrder: 5 },
-      { name: "Pekarski program", slug: "pekarski-program", description: "Kroasani, brioši i slatka peciva, svako jutro sveža.", image: IMG.croissants, sortOrder: 6 },
+      { name: "Torte", slug: "torte", description: "Rođendanske, svečane i torte po želji — od klasika do modernih dizajna.", image: BRAND.cokoladnaTorta, sortOrder: 1 },
+      { name: "Komadni kolači", slug: "komadni-kolaci", description: "Realistični komadni kolači — mus od belgijske čokolade i voće, u obliku kruške, borovnice ili maline. Pravljeni ručno, za manje i veće količine.", image: BRAND.komadniMix, sortOrder: 2 },
+      { name: "Kolači", slug: "kolaci", description: "Sitni kolači, tradicionalni i moderni, za svaku priliku.", image: BRAND.posniSitni, sortOrder: 3 },
+      { name: "Cheesecake", slug: "cheesecake", description: "Kremasti cheesecake u više ukusa, pečeni i nepečeni.", image: IMG.blueberryCheesecake, sortOrder: 4 },
+      { name: "Cupcakes & muffini", slug: "cupcakes-i-muffini", description: "Mali zalogaji sreće, idealni za proslave i poklone.", image: IMG.cupcakesMint, sortOrder: 5 },
+      { name: "Makarons", slug: "makarons", description: "Francuski makarons u pastelnim bojama i bogatim ukusima.", image: IMG.macarons, sortOrder: 6 },
+      { name: "Pekarski program", slug: "pekarski-program", description: "Kroasani, brioši i slatka peciva, svako jutro sveža.", image: IMG.croissants, sortOrder: 7 },
     ])
     .returning();
 
@@ -96,15 +113,23 @@ async function main() {
     { categoryId: c.torte, name: "Svadbena torta", slug: "svadbena-torta", shortDescription: "Višespratna torta za najvažniji dan.", description: "Elegantne višespratne svadbene torte sa dekoracijom po želji — sveže cveće, tekstura, zlatni detalji. Konsultacije i degustacija ukusa su uključene u cenu.", price: 3750, unit: "kg", images: [IMG.weddingCake, IMG.floralCake, IMG.dripCake], servings: "po dogovoru", allergens: "zavisi od izbora", leadTimeDays: 14, sortOrder: 5 },
     { categoryId: c.torte, name: "Lešnik i karamela", slug: "ljesnik-i-karamela", shortDescription: "Pečeni lješnici, slana karamela, mlečna čokolada.", description: "Biskvit sa lješnicima, krema od mlečne čokolade i slane karamele, hrskavi sloj od pralinea.", price: 4700, unit: "kom", images: [IMG.dripCake, IMG.brownie], servings: "10–12 osoba", allergens: "gluten, jaja, mleko, orašasti plodovi", sortOrder: 6 },
     { categoryId: c.torte, name: "Pistać i bela čokolada", slug: "pistac-i-bela-cokolada", shortDescription: "Nježna pistać krema sa belom čokoladom.", description: "Biskvit od pistaća sa kremom od bele čokolade i mascarponea. Dekorisana mljevenim pistaćima.", price: 4900, unit: "kom", images: [IMG.pistachioTart, IMG.orangeMousse], servings: "10–12 osoba", allergens: "gluten, jaja, mleko, orašasti plodovi", sortOrder: 7 },
+    // Komadni kolači — opisi preuzeti sa Instagram objava; cene su PROCENA (420 din/kom), uskladiti u CMS-u.
+    { categoryId: c["komadni-kolaci"], name: "Kolač od borovnice", slug: "kolac-od-borovnice", shortDescription: "Crni mus od belgijske čokolade sa borovnicama i čokoladnim prelivom.", description: "Crni mus od najfinije belgijske crne čokolade sa borovnicama, u spoju sa prelivom od čokolade. Kombinacija voćne svežine i punog čokoladnog ukusa — za sve ljubitelje voćnih i čokoladnih poslastica.", price: 420, unit: "kom", images: [BRAND.borovnica], servings: "1 osoba", allergens: "mleko; ostalo proverite pri naručivanju", featured: true, sortOrder: 1 },
+    { categoryId: c["komadni-kolaci"], name: "Kolač od kruške", slug: "kolac-od-kruske", shortDescription: "Nežan, kremast beli mus sa svežim, sočnim kruškama.", description: "Na prvi pogled — prava kruška. Na prvi zalogaj — nežan, kremasti beli mus sa prefinjenim ukusom sveže kruške. Lagana i osvežavajuća poslastica, prijatne slatkoće i nežne teksture, koja osvaja jednostavnošću i savršenim spojem ukusa.", price: 420, unit: "kom", images: [BRAND.kruska, BRAND.kruska2], servings: "1 osoba", allergens: "mleko; ostalo proverite pri naručivanju", featured: true, sortOrder: 2 },
+    { categoryId: c["komadni-kolaci"], name: "Kolač od maline", slug: "kolac-od-maline", shortDescription: "Beli mus od belgijske čokolade sa osvežavajućom malinom.", description: "Beli mus od najfinije belgijske čokolade u kombinaciji sa osvežavajućom malinom, koja svojim blago kiselkastim ukusom pruža savršen balans slatkoće i svežine. Lagana, kremasta i voćna poslastica kojoj je teško odoleti.", price: 420, unit: "kom", images: [BRAND.malina], servings: "1 osoba", allergens: "mleko; ostalo proverite pri naručivanju", sortOrder: 3 },
+    { categoryId: c["komadni-kolaci"], name: "Mango kolač", slug: "mango-kolac", shortDescription: "Kremast i osvežavajuć, sa raskošnim tropskim ukusom manga.", description: "Nežan, kremast i osvežavajuć, sa raskošnim tropskim ukusom manga koji osvaja već na prvi zalogaj. Savršen spoj lagane teksture, voćne svežine i nežne slatkoće.", price: 420, unit: "kom", images: [BRAND.mango], servings: "1 osoba", allergens: "mleko; ostalo proverite pri naručivanju", sortOrder: 4 },
+    { categoryId: c["komadni-kolaci"], name: "Raw borovnica — posno i vegansko", slug: "raw-borovnica", shortDescription: "Podloga od indijskog oraha, badema i kokosa, zaslađena agavom.", description: "Savršen spoj prirodnih sastojaka i prefinjenog ukusa. Nežna, kremasta podloga od indijskog oraha, badema i kokosa, obogaćena kokosovim puterom i bademovim mlekom, uz blagu, prirodnu slatkoću sirupa od agave. Bez jaja i mlečnih proizvoda — pogodno za post i vegansku ishranu.", price: 420, unit: "kom", images: [BRAND.rawBorovnica], servings: "1 osoba", allergens: "orašasti plodovi (indijski orah, badem)", featured: true, sortOrder: 5 },
+    { categoryId: c["komadni-kolaci"], name: "Kikiriki kolač", slug: "kikiriki-kolac", shortDescription: "Mlečna belgijska čokolada, kakao puter i kremasti sloj sa kikirikijem.", description: "Mlečna belgijska čokolada, kakao puter i bogat, kremasti sloj sa kikirikijem — spoj tekstura i ukusa kojem je teško odoleti. Ručno pripremljen.", price: 420, unit: "kom", images: [BRAND.kikiriki, BRAND.kikirikiPoster], servings: "1 osoba", allergens: "kikiriki, mleko", sortOrder: 6 },
+    { categoryId: c.kolaci, name: "Posni sitni kolači", slug: "posni-sitni-kolaci", shortDescription: "Mali slatki zalogaji bez mlečnih proizvoda i jaja — za slave i proslave.", description: "Mali slatki zalogaji, puni ukusa i pažljivo pripremljeni da ulepšaju svaku trpezu. Pravljeni bez mlečnih proizvoda i jaja — savršen izbor za slave, proslave i sve posebne trenutke.", price: 2600, unit: "kg", images: [BRAND.posniSitni], servings: "cca 40 komada po kg", allergens: "gluten, orašasti plodovi", leadTimeDays: 3, featured: true, sortOrder: 0 },
     { categoryId: c.kolaci, name: "Mix sitnih kolača", slug: "mix-sitnih-kolaca", shortDescription: "Izbor naših najprodavanijih sitnih kolača.", description: "Kilogram raznovrsnih sitnih kolača: bajadere, kuglice od oraha, moskva šnite, ferrero kocke, mini tartovi. Sastav se prilagođava sezoni.", price: 2800, unit: "kg", images: [IMG.tartlets, IMG.meringueTart], servings: "cca 40 komada po kg", allergens: "gluten, jaja, mleko, orašasti plodovi", featured: true, sortOrder: 1 },
     { categoryId: c.kolaci, name: "Baklava sa orasima", slug: "baklava-sa-orasima", shortDescription: "Tradicionalna baklava sa domaćim orasima.", description: "Tanke kore, bogato punjenje od oraha i domaći agdа. Pravi se po receptu koji se u porodici čuva generacijama.", price: 2550, unit: "kg", images: [IMG.layeredSlice], servings: "cca 25 komada po kg", allergens: "gluten, orašasti plodovi", sortOrder: 2 },
     { categoryId: c.kolaci, name: "Domaći keksići", slug: "domaci-keksici", shortDescription: "Hrskavi keksići sa čokoladom i maslacem.", description: "Klasični cookies sa komadićima čokolade, vanila keksi i keksi sa ovsenim pahuljicama. Pakovanje od 12 komada.", price: 1050, unit: "set", images: [IMG.cookies, IMG.birthdayBoard], servings: "12 komada", allergens: "gluten, jaja, mleko", sortOrder: 3 },
     { categoryId: c.kolaci, name: "Cake pops", slug: "cake-pops", shortDescription: "Šarene lizalice od torte, omiljene na dečjim proslavama.", description: "Kuglice od čokoladnog ili vanila biskvita, obložene čokoladom i posipom. Set od 10 komada, boje po želji.", price: 1750, unit: "set", images: [IMG.cupcakesOreo], servings: "10 komada", allergens: "gluten, jaja, mleko", sortOrder: 4 },
-    { categoryId: c.cheesecake, name: "Klasični New York cheesecake", slug: "klasicni-new-york-cheesecake", shortDescription: "Bogat, kremast i pečen po originalnoj recepturi.", description: "Podloga od maslac keksa, kremasto punjenje od svežeg sira i preliv po izboru: šumsko voće, karamela ili čokolada.", price: 3500, unit: "kom", images: [IMG.blueberryCheesecake, IMG.raspberryCheesecake], servings: "10–12 osoba", allergens: "gluten, jaja, mleko", featured: true, sortOrder: 1 },
+    { categoryId: c.cheesecake, name: "Klasični New York cheesecake", slug: "klasicni-new-york-cheesecake", shortDescription: "Bogat, kremast i pečen po originalnoj recepturi.", description: "Podloga od maslac keksa, kremasto punjenje od svežeg sira i preliv po izboru: šumsko voće, karamela ili čokolada.", price: 3500, unit: "kom", images: [IMG.blueberryCheesecake, IMG.raspberryCheesecake], servings: "10–12 osoba", allergens: "gluten, jaja, mleko", sortOrder: 1 },
     { categoryId: c.cheesecake, name: "Cheesecake sa šumskim voćem", slug: "cheesecake-sa-sumskim-vocem", shortDescription: "Nepečeni, lagani cheesecake sa domaćim prelivom.", description: "Lagani cheesecake bez pečenja, sa prelivom od svežeg šumskog voća. Savršeno osveženje za letne dane.", price: 3300, unit: "kom", images: [IMG.blueberryCheesecake2, IMG.blueberryCheesecake], servings: "8–10 osoba", allergens: "gluten, mleko", sortOrder: 2 },
-    { categoryId: c["cupcakes-i-muffini"], name: "Cupcakes vanila & čokolada", slug: "cupcakes-vanila-i-cokolada", shortDescription: "Set od 6 cupcakesa sa buttercream kremom.", description: "Tri vanila i tri čokoladna cupcakesa sa svilenkastom buttercream kremom. Dekoracija u bojama po želji.", price: 1650, unit: "set", images: [IMG.cupcakesMint, IMG.cupcakes3], servings: "6 komada", allergens: "gluten, jaja, mleko", featured: true, sortOrder: 1 },
+    { categoryId: c["cupcakes-i-muffini"], name: "Cupcakes vanila & čokolada", slug: "cupcakes-vanila-i-cokolada", shortDescription: "Set od 6 cupcakesa sa buttercream kremom.", description: "Tri vanila i tri čokoladna cupcakesa sa svilenkastom buttercream kremom. Dekoracija u bojama po želji.", price: 1650, unit: "set", images: [IMG.cupcakesMint, IMG.cupcakes3], servings: "6 komada", allergens: "gluten, jaja, mleko", sortOrder: 1 },
     { categoryId: c["cupcakes-i-muffini"], name: "Muffini sa borovnicama", slug: "muffini-sa-borovnicama", shortDescription: "Mekani muffini puni svežih borovnica.", description: "Klasični američki muffini sa borovnicama i hrskavom koricom. Set od 6 komada.", price: 1150, unit: "set", images: [IMG.cupcakesSprinkles], servings: "6 komada", allergens: "gluten, jaja, mleko", sortOrder: 2 },
-    { categoryId: c.makarons, name: "Makarons kutija 12", slug: "makarons-kutija-12", shortDescription: "12 makaronsa u 6 ukusa u poklon kutiji.", description: "Malina, pistać, slana karamela, vanila, čokolada i limun. Pakovani u elegantnu poklon kutiju.", price: 2100, unit: "set", images: [IMG.macarons], servings: "12 komada", allergens: "jaja, mleko, orašasti plodovi", featured: true, sortOrder: 1 },
+    { categoryId: c.makarons, name: "Makarons kutija 12", slug: "makarons-kutija-12", shortDescription: "12 makaronsa u 6 ukusa u poklon kutiji.", description: "Malina, pistać, slana karamela, vanila, čokolada i limun. Pakovani u elegantnu poklon kutiju.", price: 2100, unit: "set", images: [IMG.macarons], servings: "12 komada", allergens: "jaja, mleko, orašasti plodovi", sortOrder: 1 },
     { categoryId: c["pekarski-program"], name: "Maslac kroasan", slug: "maslac-kroasan", shortDescription: "Lisnat, zlatan i hrskav, kao u Parizu.", description: "Kroasan od pravog maslaca, fermentisan 24h za punu aromu. Dostupan klasičan, sa čokoladom ili bademom.", price: 260, unit: "kom", images: [IMG.croissant, IMG.croissants], servings: "1 komad", allergens: "gluten, mleko, jaja", leadTimeDays: 1, minQuantity: 4, sortOrder: 1 },
   ]);
 
@@ -116,7 +141,7 @@ async function main() {
   ]);
 
   await db.insert(schema.galleryImages).values(
-    [IMG.weddingCake, IMG.blackberryCake, IMG.floralCake, IMG.kneading, IMG.bakery, IMG.tiramisuJars, IMG.meringueTart, IMG.cooking, IMG.dripCake, IMG.macarons, IMG.buffet, IMG.pistachioTart].map(
+    ["/brand/eleni-10.jpg", "/brand/eleni-01.jpg", "/brand/eleni-04.jpg", "/brand/eleni-06.jpg", "/brand/eleni-09.jpg", "/brand/eleni-03.jpg", "/brand/eleni-05.jpg", "/brand/eleni-07.jpg", "/brand/eleni-08.jpg", "/brand/eleni-02.jpg", BRAND.kruska2, BRAND.komadniMix, BRAND.rawBorovnica, BRAND.mango, BRAND.praline, BRAND.posniSitni].map(
       (image, i) => ({ image, sortOrder: i + 1 }),
     ),
   );
@@ -144,7 +169,7 @@ async function main() {
       cateringTitle: "Slatki sto, poslovni doručak, rođendan",
       cateringText: "Recite nam broj gostiju i povod. Sastavimo ponudu, dovezemo, postavimo i pospremimo.",
       cateringImage: IMG.buffet,
-      phone: "+382 67 123 456",
+      phone: "063 346 275",
       email: "info@eleni.me",
       address: "Novi Sad",
       workingHours: "Pon–Sub 08:00–20:00, Ned 09:00–15:00",
