@@ -22,7 +22,7 @@ export default async function CategoriesAdminPage() {
                 <tr key={c.id} className="hover:bg-surface-2/60">
                   <Td>
                     <Link href={`/admin/kategorije/${c.id}`} className="flex items-center gap-3">
-                      <span className="bg-surface-2 relative size-11 shrink-0 overflow-hidden rounded-lg">{c.image && <Image src={c.image} alt="" fill sizes="44px" className="object-cover" unoptimized={c.image.startsWith("/uploads/")} />}</span>
+                      <span className="bg-surface-2 relative size-11 shrink-0 overflow-hidden rounded-lg">{c.image && <Image src={c.image} alt="" fill sizes="96px" quality={85} className="object-cover" unoptimized={c.image.startsWith("/uploads/")} />}</span>
                       <span><span className="block font-semibold">{c.name}</span><span className="text-muted block text-xs">/kategorija/{c.slug}</span></span>
                     </Link>
                   </Td>

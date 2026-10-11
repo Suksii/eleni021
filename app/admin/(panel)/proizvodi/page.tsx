@@ -23,7 +23,7 @@ export default async function ProductsAdminPage() {
                   <Td>
                     <Link href={`/admin/proizvodi/${p.id}`} className="flex items-center gap-3">
                       <span className="bg-surface-2 relative size-11 shrink-0 overflow-hidden rounded-lg">
-                        {p.images[0] && <Image src={p.images[0]} alt="" fill sizes="44px" className="object-cover" unoptimized={p.images[0].startsWith("/uploads/")} />}
+                        {p.images[0] && <Image src={p.images[0]} alt="" fill sizes="96px" quality={85} className="object-cover" unoptimized={p.images[0].startsWith("/uploads/")} />}
                       </span>
                       <span className="min-w-0">
                         <span className="block truncate font-semibold">{p.name}</span>

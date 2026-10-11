@@ -23,7 +23,7 @@ export default async function CateringAdminPage() {
                 <tr key={p.id} className="hover:bg-surface-2/60">
                   <Td>
                     <Link href={`/admin/ketering/${p.id}`} className="flex items-center gap-3">
-                      <span className="bg-surface-2 relative size-11 shrink-0 overflow-hidden rounded-lg">{p.image && <Image src={p.image} alt="" fill sizes="44px" className="object-cover" unoptimized={p.image.startsWith("/uploads/")} />}</span>
+                      <span className="bg-surface-2 relative size-11 shrink-0 overflow-hidden rounded-lg">{p.image && <Image src={p.image} alt="" fill sizes="96px" quality={85} className="object-cover" unoptimized={p.image.startsWith("/uploads/")} />}</span>
                       <span className="font-semibold">{p.name}</span>
                       {p.featured && <StatusBadge label="Izdvojen" tone="warning" />}
                     </Link>

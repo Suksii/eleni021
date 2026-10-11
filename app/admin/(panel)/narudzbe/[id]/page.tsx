@@ -32,7 +32,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             <ul className="divide-border divide-y">
               {o.items.map((it) => (
                 <li key={it.productId} className="flex items-center gap-3 py-3">
-                  <span className="bg-surface-2 relative size-12 shrink-0 overflow-hidden rounded-lg">{it.image && <Image src={it.image} alt="" fill sizes="48px" className="object-cover" unoptimized={it.image.startsWith("/uploads/")} />}</span>
+                  <span className="bg-surface-2 relative size-12 shrink-0 overflow-hidden rounded-lg">{it.image && <Image src={it.image} alt="" fill sizes="96px" quality={85} className="object-cover" unoptimized={it.image.startsWith("/uploads/")} />}</span>
                   <div className="min-w-0 flex-1">
                     <Link href={`/admin/proizvodi/${it.productId}`} className="block truncate text-sm font-semibold hover:underline">{it.name}</Link>
                     <span className="text-muted text-xs">{it.quantity} {UNIT_LABEL[it.unit]} × {formatPrice(it.price)}</span>

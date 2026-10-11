@@ -26,7 +26,7 @@ export default function GalleryManager({ images }: { images: GalleryImage[] }) {
       {images.map((g) => (
         <li key={g.id} className="bg-surface shadow-card overflow-hidden rounded-2xl">
           <div className="bg-surface-2 relative aspect-square">
-            <Image src={g.image} alt="" fill sizes="240px" className="object-cover" unoptimized={g.image.startsWith("/uploads/")} />
+            <Image src={g.image} alt="" fill sizes="480px" quality={85} className="object-contain" unoptimized={g.image.startsWith("/uploads/")} />
             {!g.active && <span className="absolute top-2 left-2 rounded-md bg-black/70 px-2 py-0.5 text-[0.65rem] font-bold text-white">Sakrivena</span>}
           </div>
           <div className="space-y-2 p-3">

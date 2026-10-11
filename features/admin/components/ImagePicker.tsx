@@ -80,7 +80,7 @@ export default function ImagePicker({ name, label, defaultValue, multiple = fals
         <ul className={cn("grid gap-3", multiple ? "grid-cols-3 sm:grid-cols-4 md:grid-cols-5" : "grid-cols-2 sm:grid-cols-3")}>
           {images.map((src, i) => (
             <li key={src + i} className="bg-surface-2 group relative aspect-square overflow-hidden rounded-xl">
-              <Image src={src} alt="" fill sizes="160px" className="object-cover" unoptimized={src.startsWith("/uploads/")} />
+              <Image src={src} alt="" fill sizes="320px" quality={85} className="object-contain" unoptimized={src.startsWith("/uploads/")} />
               <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1 bg-gradient-to-t from-black/60 p-1.5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
                 {multiple && (
                   <>
