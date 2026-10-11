@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Paleta po brendu (Instagram fotografije): pijesak, topli taupe, bronza. */
+  --color-background: #f4ede3;
+  --color-foreground: #2f2823;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-surface: #fbf7f0;
+  --color-surface-2: #ebe1d3;
+  --color-surface-3: #dfd2bf;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-primary: #8a6f4e;
+  --color-primary-hover: #6f5839;
+  --color-primary-soft: #eee3d1;
+  --color-primary-fg: #ffffff;
+
+  --color-accent: #c2a878;
+  --color-accent-soft: #f1e7d5;
+
+  --color-success: #5e7a5a;
+  --color-success-soft: #e8efe6;
+  --color-danger: #a8443f;
+  --color-warning: #b8771d;
+  --color-warning-soft: #fbeedb;
+
+  --color-border: rgb(47 40 35 / 0.1);
+  --color-line-2: #d9ccb9;
+  --color-muted: #7a6b5d;
+  --color-muted-2: #a4968a;
+
+  /* Aliasi koje dijeljene komponente iz referentnog projekta očekuju. */
+  --color-tertiary: #8a6f4e;
+  --color-brand-red: #6f5839;
+  --color-secondary: #5e7a5a;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+
+  --container-page: 84rem;
+
+  --shadow-card:
+    0 1px 2px rgb(47 40 35 / 0.05), 0 10px 30px -12px rgb(47 40 35 / 0.18);
+  --shadow-card-hover: 0 24px 50px -24px rgb(43 29 22 / 0.4);
+  --shadow-custom: 0 18px 50px rgb(43 29 22 / 0.12);
+  /* Plutajuća navigacija / paneli (kao Podix) */
+  --shadow-soft: 0 10px 40px -12px rgb(43 29 22 / 0.18);
+  --shadow-glow: 0 10px 30px -10px rgb(138 111 78 / 0.55);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    overflow-x: clip;
+    scrollbar-gutter: stable;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    overflow-x: clip;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+  button {
+    cursor: pointer;
+  }
+  ::selection {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+}
+
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-page);
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-2);
+    border-radius: 9999px;
+  }
+}
+
+/* Fino zrno preko cijele strane — papirni, "štampani" dojam umjesto sterilnog ekrana. */
+@layer base {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Naslov sekcije: sitni kurziv + tanka linija — umjesto uppercase eyebrow-a. */
+@utility label-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-muted);
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-line-2);
+  }
+}
+
+/* Tačkasti vodič između naziva i cijene, kao na tabli u slastičarnici. */
+@utility leaders {
+  flex: 1;
+  margin-inline: 0.6rem;
+  border-bottom: 1.5px dotted var(--color-line-2);
+  transform: translateY(-0.35em);
+  min-width: 1.5rem;
+}
+
+/* Lučni gornji rub — vitrina. */
+@utility arch {
+  border-radius: 999px 999px 18px 18px;
+}
+
+@utility eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+@layer components {
+  .prose-cms {
+    p {
+      @apply my-3 leading-relaxed;
+    }
+    p:first-child {
+      @apply mt-0;
+    }
+    p:last-child {
+      @apply mb-0;
+    }
+  }
 }
