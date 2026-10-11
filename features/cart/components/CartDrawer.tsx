@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import PathnameWatcher from "@/features/shared/components/layout/PathnameWatcher";
-import { ShoppingBag, Trash2 } from "lucide-react";
+import { ShoppingBasket, Trash2 } from "lucide-react";
 import Drawer from "@/features/shared/components/ui/Drawer";
 import Button from "@/features/shared/components/ui/Button";
 import QuantityInput from "@/features/shared/components/ui/QuantityInput";
@@ -53,7 +53,7 @@ export default function CartDrawer() {
         {items.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
             <span className="bg-surface-2 text-primary grid size-16 place-items-center rounded-full">
-              <ShoppingBag size={26} aria-hidden="true" />
+              <ShoppingBasket size={26} aria-hidden="true" />
             </span>
             <p className="font-display text-xl font-semibold">
               Korpa je prazna

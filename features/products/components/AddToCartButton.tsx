@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, ShoppingBag } from "lucide-react";
+import { Plus, ShoppingBasket } from "lucide-react";
 import { toast } from "sonner";
 import Button from "@/features/shared/components/ui/Button";
 import QuantityInput from "@/features/shared/components/ui/QuantityInput";
@@ -52,7 +52,7 @@ export default function AddToCartButton({
     <div className="flex flex-wrap items-center gap-3">
       <QuantityInput value={qty} min={product.minQuantity} onChange={setQty} />
       <Button size="lg" onClick={handleAdd} className="flex-1 sm:min-w-56 sm:flex-none">
-        <ShoppingBag size={18} aria-hidden="true" />
+        <ShoppingBasket size={18} aria-hidden="true" />
         Dodaj u korpu
       </Button>
     </div>

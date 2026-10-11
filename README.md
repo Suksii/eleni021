@@ -32,3 +32,16 @@ Proizvodi, kategorije, ketering paketi, galerija, utisci kupaca, podešavanja sa
 `npm run build && npm start` (Node runtime). Postavi `NEXT_PUBLIC_BASE_URL` na
 produkcijski domen — dok nije `https://eleni.me`, sajt šalje `X-Robots-Tag: noindex`
 (vidi `next.config.ts`).
+
+### Vercel
+
+Repo je povezan sa `https://github.com/Suksii/eleni021`. Na Vercel-u:
+
+1. Env varijable (Production + Preview): `DATABASE_URL`, `AUTH_SECRET`,
+   `NEXT_PUBLIC_BASE_URL` (URL deploya, bez završne kose crte), `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
+2. Storage → **Blob** store povezan sa projektom — daje `BLOB_READ_WRITE_TOKEN`, bez njega
+   CMS upload slika na Vercel-u ne radi (fajl-sistem je read-only).
+3. Disk keš handler (`cache-handlers/disk.js`) se na Vercel-u automatski isključuje
+   (`process.env.VERCEL`), koristi se Vercel Data Cache.
+
+CLI: `npx vercel login`, zatim `npx vercel link` i `npx vercel --prod`.

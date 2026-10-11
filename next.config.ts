@@ -7,9 +7,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   // Roditeljski folder ima zalutali package-lock.json — bez ovoga Turbopack upozorava.
   turbopack: { root: __dirname },
-  cacheHandlers: {
-    default: require.resolve("./cache-handlers/disk.js"),
-  },
+  // Disk keš handler samo van Vercel-a (tamo je fajl-sistem read-only, a
+  // Vercel ima sopstveni Data Cache za `use cache`).
+  cacheHandlers: process.env.VERCEL
+    ? undefined
+    : { default: require.resolve("./cache-handlers/disk.js") },
   cacheLife: {
     // Katalog (proizvodi, kategorije, ketering) — CMS ga eksplicitno invalidira
     // preko `updateTag`, pa TTL služi samo kao sigurnosna mreža.
