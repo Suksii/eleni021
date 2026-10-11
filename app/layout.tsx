@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -17,6 +17,10 @@ const display = Fraunces({
   display: "swap",
   axes: ["opsz", "SOFT"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#8a6f4e",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.appUrl),
