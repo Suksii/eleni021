@@ -26,7 +26,7 @@ async function OrderSummary({ params }: { params: Promise<{ code: string }> }) {
 
   return (
     <>
-      <OrderPlacedReset />
+      <OrderPlacedReset code={order.code} total={order.total} />
       <div className="bg-success-soft text-success flex flex-col items-center gap-3 rounded-3xl px-6 py-10 text-center">
         <CheckCircle2 size={40} aria-hidden="true" />
         <h1 className="font-display text-3xl font-semibold">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { siteConfig } from "@/config/site.config";
 import { env } from "@/lib/env";
@@ -41,6 +42,8 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
         <Toaster position="bottom-center" richColors closeButton />
+        {/* Vercel Web Analytics — bez kolačića; događaji: kontakt, narudzba, upit. */}
+        <Analytics />
       </body>
     </html>
   );

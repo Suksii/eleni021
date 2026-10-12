@@ -114,6 +114,18 @@ export const SETTING_GROUPS: SettingGroup[] = [
       { key: "workingHours", label: "Radno vreme", type: "text" },
       { key: "instagram", label: "Instagram URL", type: "text" },
       { key: "facebook", label: "Facebook URL", type: "text" },
+      {
+        key: "viber",
+        label: "Viber broj",
+        type: "text",
+        hint: "Broj na kome imate Viber, npr. 063 346 275. Prazno = Viber se ne nudi u dugmetu za kontakt.",
+      },
+      {
+        key: "whatsapp",
+        label: "WhatsApp broj",
+        type: "text",
+        hint: "Broj na kome imate WhatsApp. Prazno = WhatsApp se ne nudi.",
+      },
     ],
   },
   {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { track } from "@vercel/analytics";
 import { CheckCircle2, Send } from "lucide-react";
 import Button from "@/features/shared/components/ui/Button";
 import Input from "@/features/shared/components/ui/Input";
@@ -40,6 +41,10 @@ export default function InquiryForm({
 }: InquiryFormProps) {
   const [state, action, pending] = useActionState(submitInquiry, INITIAL);
   const fe = state.fieldErrors ?? {};
+
+  useEffect(() => {
+    if (state.ok) track("upit", { tip: type });
+  }, [state.ok, type]);
 
   if (state.ok) {
     return (

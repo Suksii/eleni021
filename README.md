@@ -60,6 +60,13 @@ emaila ne poništava narudžbu. Dok domen nije verifikovan u Resend-u, pošiljal
 naloga — potvrde kupcima tada ne prolaze (greška se loguje). Posle verifikacije domena
 postavi `EMAIL_FROM="Eleni <narudzbe@eleni.me>"`.
 
+### Kontakt dugme i analitika
+
+Lebdeće dugme dole desno (`ContactFab`) nudi Poziv / Viber / WhatsApp — brojevi iz CMS
+podešavanja (`phone`, `viber`, `whatsapp`; prazno = kanal se ne nudi). Vercel Web Analytics
+(`<Analytics />` u root layoutu, bez kolačića) beleži događaje `kontakt` (kanal, mesto),
+`narudzba` (iznos) i `upit` (tip); izveštaj je u Vercel panelu projekta.
+
 ### Prijava u admin
 
 Posle 5 neuspešnih pokušaja (po IP-u ili po emailu) u 15 minuta prijava je blokirana

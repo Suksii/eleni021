@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ViberIcon, WhatsAppIcon } from "@/features/shared/components/icons/Social";
+import { telHref, viberHref, whatsappHref } from "@/lib/utils/phone";
 import PageHero from "@/features/shared/components/page/PageHero";
 import InquiryForm from "@/features/inquiries/components/InquiryForm";
 import { getSettings } from "@/features/site/api/getSettings";
@@ -28,7 +30,9 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const s = await getSettings();
   const rows = [
     { icon: MapPin, label: "Adresa", value: s.address },
-    { icon: Phone, label: "Telefon", value: s.phone, href: s.phone ? `tel:${s.phone.replace(/\s/g, "")}` : undefined },
+    { icon: Phone, label: "Telefon", value: s.phone, href: s.phone ? telHref(s.phone) : undefined },
+    { icon: ViberIcon, label: "Viber", value: s.viber, href: s.viber ? viberHref(s.viber) : undefined },
+    { icon: WhatsAppIcon, label: "WhatsApp", value: s.whatsapp, href: s.whatsapp ? whatsappHref(s.whatsapp) : undefined },
     { icon: Mail, label: "Email", value: s.email, href: s.email ? `mailto:${s.email}` : undefined },
     { icon: Clock, label: "Radno vreme", value: s.workingHours },
   ].filter((r) => r.value);

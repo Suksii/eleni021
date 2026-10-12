@@ -171,6 +171,8 @@ async function main() {
       workingHours: "Pon–Sub 08:00–20:00, Ned 09:00–15:00",
       instagram: "https://www.instagram.com/eleni_021",
       facebook: "",
+      viber: "063 346 275",
+      whatsapp: "063 346 275",
       orderNotice: "Torte naručujete najmanje 2 dana unapred. Dostava u Novom Sadu je besplatna za narudžbe preko 6.000 din.",
       deliveryFee: "500",
       freeDeliveryFrom: "6000",

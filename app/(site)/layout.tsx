@@ -2,6 +2,7 @@ import Header from "@/features/shared/components/layout/Header";
 import Footer from "@/features/shared/components/layout/Footer";
 import AnnounceBar from "@/features/shared/components/layout/AnnounceBar";
 import BackToTop from "@/features/shared/components/layout/BackToTop";
+import ContactButton from "@/features/shared/components/layout/ContactButton";
 import CartDrawer from "@/features/cart/components/CartDrawer";
 import { CartProvider } from "@/features/cart/CartContext";
 
@@ -21,6 +22,7 @@ export default function SiteLayout({
       <Footer />
       <CartDrawer />
       <BackToTop />
+      <ContactButton />
     </CartProvider>
   );
 }
