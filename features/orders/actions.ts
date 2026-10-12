@@ -3,9 +3,11 @@
 import { randomInt } from "node:crypto";
 import { inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { z } from "zod";
 import { db } from "@/db";
 import { DELIVERY_TYPES, orders, products, type OrderItem } from "@/db/schema";
+import { sendOrderEmails } from "@/features/orders/email";
 
 export interface CheckoutState {
   error?: string;
@@ -121,22 +123,23 @@ export async function placeOrder(
   const fee = d.deliveryType === "dostava" ? d.deliveryFee : 0;
   const total = Math.round((subtotal + fee) * 100) / 100;
 
+  const values = {
+    customerName: d.customerName,
+    phone: d.phone,
+    email: d.email,
+    deliveryType: d.deliveryType,
+    address: d.deliveryType === "dostava" ? d.address : "",
+    deliveryDate: d.deliveryDate,
+    note: d.note,
+    items: orderItems,
+    total,
+  };
+
   let code = "";
   for (let attempt = 0; attempt < 5; attempt++) {
     code = orderCode();
     try {
-      await db.insert(orders).values({
-        code,
-        customerName: d.customerName,
-        phone: d.phone,
-        email: d.email,
-        deliveryType: d.deliveryType,
-        address: d.deliveryType === "dostava" ? d.address : "",
-        deliveryDate: d.deliveryDate,
-        note: d.note,
-        items: orderItems,
-        total,
-      });
+      await db.insert(orders).values({ code, ...values });
       break;
     } catch (e) {
       if (attempt === 4) {
@@ -145,6 +148,11 @@ export async function placeOrder(
       }
     }
   }
+
+  // Emailovi (vlasniku + kupcu) idu posle odgovora — ne usporavaju redirect
+  // i njihov neuspeh ne poništava narudžbu.
+  const saved = { code, ...values };
+  after(() => sendOrderEmails(saved));
 
   redirect(`/narudzba/${code}`);
 }

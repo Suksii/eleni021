@@ -70,6 +70,16 @@ Pravila:
 - `proxy.ts` redirektuje `/admin/*` bez cookie-ja na `/admin/prijava?next=…`;
   pravi guard je `getSession()` u `app/admin/(panel)/layout.tsx`.
 - **Svaka admin server akcija** i upload ruta zovu `requireSession()`/`getSession()`.
+- Ograničenje prijave: `lib/auth/loginAttempts.ts` + tabela `login_attempts` — 5 neuspešnih
+  pokušaja (po IP-u ili emailu) u 15 min → blok 15 min. U bazi jer je Vercel serverless.
+
+## Email (Resend)
+
+`lib/email/send.ts` (jedan POST na Resend API, bez SDK-a; bez `RESEND_API_KEY` samo log),
+`lib/email/layout.ts` (HTML omotač, inline stilovi). `features/orders/email.ts` i
+`features/inquiries/email.ts` sastavljaju poruke: obaveštenje vlasniku (`settings.email`)
+i potvrdu kupcu ako je ostavio email. Pozivaju se iz akcija kroz `after()` — posle
+odgovora, neuspeh ne poništava upis u bazu.
 
 ## Korpa i narudžba
 

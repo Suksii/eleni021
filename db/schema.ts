@@ -174,6 +174,15 @@ export const adminUsers = pgTable("admin_users", {
   createdAt: timestamps.createdAt,
 });
 
+// Ograničenje pokušaja prijave u admin — po IP-u i po emailu (serverless nema
+// trajnu memoriju, pa brojač živi u bazi). Vidi lib/auth/loginAttempts.ts.
+export const loginAttempts = pgTable("login_attempts", {
+  key: text("key").primaryKey(),
+  attempts: integer("attempts").notNull().default(0),
+  lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }).notNull().defaultNow(),
+  blockedUntil: timestamp("blocked_until", { withTimezone: true }),
+});
+
 export type Category = typeof categories.$inferSelect;
 export type Product = typeof products.$inferSelect;
 export type CateringPackage = typeof cateringPackages.$inferSelect;

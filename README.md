@@ -44,4 +44,22 @@ Repo je povezan sa `https://github.com/Suksii/eleni021`. Na Vercel-u:
 3. Disk keš handler (`cache-handlers/disk.js`) se na Vercel-u automatski isključuje
    (`process.env.VERCEL`), koristi se Vercel Data Cache.
 
+4. `RESEND_API_KEY` (i `EMAIL_FROM` kad je domen verifikovan) — bez toga se emailovi o
+   narudžbama i upitima ne šalju, samo se loguju.
+
 CLI: `npx vercel login`, zatim `npx vercel link` i `npx vercel --prod`.
+
+### Email (Resend)
+
+Nova narudžba i novi upit šalju email vlasniku (adresa = `email` u CMS podešavanjima)
+i potvrdu kupcu ako je ostavio email (`lib/email/*`, `features/orders/email.ts`,
+`features/inquiries/email.ts`). Slanje ide kroz `after()` posle odgovora, pa neuspeh
+emaila ne poništava narudžbu. Dok domen nije verifikovan u Resend-u, pošiljalac je
+`onboarding@resend.dev` i Resend dozvoljava slanje samo na email vlasnika Resend
+naloga — potvrde kupcima tada ne prolaze (greška se loguje). Posle verifikacije domena
+postavi `EMAIL_FROM="Eleni <narudzbe@eleni.me>"`.
+
+### Prijava u admin
+
+Posle 5 neuspešnih pokušaja (po IP-u ili po emailu) u 15 minuta prijava je blokirana
+15 minuta (`lib/auth/loginAttempts.ts`, tabela `login_attempts`).
