@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+import { env } from "./lib/env";
 
-const IS_INDEXABLE =
-  process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") === "https://eleni.me";
+// Probni domeni (*.vercel.app, localhost) šalju noindex na svakoj stranici.
+const IS_INDEXABLE = env.isIndexable;
 
 const nextConfig: NextConfig = {
   cacheComponents: true,

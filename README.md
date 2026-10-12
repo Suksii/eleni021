@@ -30,7 +30,8 @@ Proizvodi, kategorije, ketering paketi, galerija, utisci kupaca, podešavanja sa
 ## Produkcija
 
 `npm run build && npm start` (Node runtime). Postavi `NEXT_PUBLIC_BASE_URL` na
-produkcijski domen — dok nije `https://eleni.me`, sajt šalje `X-Robots-Tag: noindex`
+produkcijski domen — na `*.vercel.app` i `localhost` sajt šalje `X-Robots-Tag: noindex`
+  i `robots.txt` zabranjuje sve; na bilo kom pravom https domenu indeksiranje je uključeno
 (vidi `next.config.ts`).
 
 ### Vercel
