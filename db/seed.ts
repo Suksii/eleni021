@@ -166,7 +166,7 @@ async function main() {
       cateringText: "Recite nam broj gostiju i povod. Sastavimo ponudu, dovezemo, postavimo i pospremimo.",
       cateringImage: IMG.buffet,
       phone: "063 346 275",
-      email: "info@eleni.me",
+      email: "eleni021ns@gmail.com",
       address: "Novi Sad",
       workingHours: "Pon–Sub 08:00–20:00, Ned 09:00–15:00",
       instagram: "https://www.instagram.com/eleni_021",
