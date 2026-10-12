@@ -16,8 +16,8 @@ interface ContactFabProps {
 
 const WA_TEXT = "Zdravo! Zanima me narudžba.";
 
-// Lebdeće dugme za kontakt (dole desno): jedno dugme koje otvara Poziv /
-// Viber / WhatsApp. Kanali bez broja u CMS-u se ne prikazuju. Skriveno na
+// Lebdeće dugme za kontakt (dole desno): jedno dugme koje otvara tri okrugle
+// ikonice (WhatsApp / Viber / poziv) bez teksta — naziv je u aria-label/title. Kanali bez broja u CMS-u se ne prikazuju. Skriveno na
 // narudžbi (da ne odvlači od forme). Drawer-i su z-50 i prekrivaju ga.
 export default function ContactFab({ phone, viber, whatsapp }: ContactFabProps) {
   const pathname = usePathname();
@@ -74,13 +74,14 @@ export default function ContactFab({ phone, viber, whatsapp }: ContactFabProps) 
               rel={key === "whatsapp" ? "noreferrer" : undefined}
               tabIndex={open ? 0 : -1}
               onClick={() => choose(key)}
+              aria-label={label}
+              title={label}
               className={cn(
-                "shadow-soft flex h-11 items-center gap-2.5 rounded-full pr-4 pl-3 text-sm font-semibold transition-transform hover:scale-[1.03] motion-reduce:transition-none",
+                "shadow-soft grid size-12 place-items-center rounded-full transition-transform hover:scale-[1.06] motion-reduce:transition-none",
                 cls,
               )}
             >
-              <Icon size={18} aria-hidden="true" />
-              {label}
+              <Icon size={22} aria-hidden="true" />
             </a>
           </li>
         ))}
