@@ -1,6 +1,6 @@
 import type { Order } from "@/db/schema";
 import { getSettings, type SiteSettings } from "@/features/site/api/getSettings";
-import { button, emailLayout, escapeHtml, lineItems, rows } from "@/lib/email/layout";
+import { absoluteLogoUrl, button, emailLayout, escapeHtml, lineItems, rows } from "@/lib/email/layout";
 import { sendEmail, type EmailMessage } from "@/lib/email/send";
 import { formatDate } from "@/lib/utils/formatDate";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -47,6 +47,7 @@ function deliveryRows(o: OrderForEmail): Array<[string, string]> {
 export function buildOrderEmails(o: OrderForEmail, s: SiteSettings): EmailMessage[] {
   const siteName = s.siteName || "Eleni";
   const base = siteUrl();
+  const logoUrl = absoluteLogoUrl(s.logo, base);
   const ownerTo = s.email;
   const out: EmailMessage[] = [];
 
@@ -82,7 +83,7 @@ export function buildOrderEmails(o: OrderForEmail, s: SiteSettings): EmailMessag
     out.push({
       to: ownerTo,
       subject,
-      html: emailLayout({ siteName, siteUrl: base, eyebrow: "Nova narudžba", title: o.code, body }),
+      html: emailLayout({ siteName, siteUrl: base, logoUrl, eyebrow: "Nova narudžba", title: o.code, body }),
       text,
       replyTo: o.email || undefined,
     });
@@ -120,6 +121,7 @@ export function buildOrderEmails(o: OrderForEmail, s: SiteSettings): EmailMessag
       html: emailLayout({
         siteName,
         siteUrl: base,
+        logoUrl,
         eyebrow: "Potvrda narudžbe",
         title: "Narudžba je primljena",
         body,

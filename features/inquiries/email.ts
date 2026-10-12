@@ -1,6 +1,6 @@
 import type { Inquiry } from "@/db/schema";
 import { getSettings, type SiteSettings } from "@/features/site/api/getSettings";
-import { button, emailLayout, escapeHtml, rows } from "@/lib/email/layout";
+import { absoluteLogoUrl, button, emailLayout, escapeHtml, rows } from "@/lib/email/layout";
 import { sendEmail, type EmailMessage } from "@/lib/email/send";
 import { formatDate } from "@/lib/utils/formatDate";
 import { INQUIRY_TYPE_LABEL } from "@/lib/utils/statusLabels";
@@ -17,6 +17,7 @@ function siteUrl() {
 export function buildInquiryEmails(q: InquiryForEmail, s: SiteSettings): EmailMessage[] {
   const siteName = s.siteName || "Eleni";
   const base = siteUrl();
+  const logoUrl = absoluteLogoUrl(s.logo, base);
   const typeLabel = INQUIRY_TYPE_LABEL[q.type];
   const out: EmailMessage[] = [];
 
@@ -60,7 +61,7 @@ export function buildInquiryEmails(q: InquiryForEmail, s: SiteSettings): EmailMe
     out.push({
       to: s.email,
       subject: `Novi upit (${typeLabel}) — ${q.name}`,
-      html: emailLayout({ siteName, siteUrl: base, eyebrow: "Novi upit", title: typeLabel, body }),
+      html: emailLayout({ siteName, siteUrl: base, logoUrl, eyebrow: "Novi upit", title: typeLabel, body }),
       text,
       replyTo: q.email || undefined,
     });
@@ -87,7 +88,7 @@ export function buildInquiryEmails(q: InquiryForEmail, s: SiteSettings): EmailMe
     out.push({
       to: q.email,
       subject: `${siteName} — primili smo vaš upit`,
-      html: emailLayout({ siteName, siteUrl: base, eyebrow: "Potvrda", title: "Upit je primljen", body, footer: escapeHtml(contact) }),
+      html: emailLayout({ siteName, siteUrl: base, logoUrl, eyebrow: "Potvrda", title: "Upit je primljen", body, footer: escapeHtml(contact) }),
       text,
       replyTo: s.email || undefined,
     });

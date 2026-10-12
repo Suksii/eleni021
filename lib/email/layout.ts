@@ -10,6 +10,12 @@ const COLORS = {
   border: "#e4dacb",
 };
 
+/** Logo iz CMS-a kao apsolutni URL — relativna putanja (/brand/...) dobija domen sajta. */
+export function absoluteLogoUrl(logo: string | undefined, siteUrl: string): string | undefined {
+  if (!logo) return undefined;
+  return /^https?:\/\//.test(logo) ? logo : `${siteUrl}${logo.startsWith("/") ? "" : "/"}${logo}`;
+}
+
 export function escapeHtml(s: string): string {
   return s
     .replaceAll("&", "&amp;")
@@ -22,6 +28,8 @@ export function escapeHtml(s: string): string {
 export interface EmailLayoutOptions {
   siteName: string;
   siteUrl: string;
+  /** Apsolutni URL logotipa (email klijenti ne vide relativne putanje). Prazno = tekstualni logo. */
+  logoUrl?: string;
   eyebrow: string;
   title: string;
   /** Već escapovan HTML sadržaj. */
@@ -37,7 +45,11 @@ export function emailLayout(o: EmailLayoutOptions): string {
 <body style="margin:0;padding:24px 12px;background:${c.background};font-family:Georgia,'Times New Roman',serif;color:${c.foreground};">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;margin:0 auto;">
     <tr><td style="padding:0 8px 16px;">
-      <a href="${escapeHtml(o.siteUrl)}" style="font-size:22px;font-weight:600;color:${c.primary};text-decoration:none;letter-spacing:0.02em;">${escapeHtml(o.siteName)}</a>
+      <a href="${escapeHtml(o.siteUrl)}" style="display:inline-block;font-size:22px;font-weight:600;color:${c.primary};text-decoration:none;letter-spacing:0.02em;">${
+        o.logoUrl
+          ? `<img src="${escapeHtml(o.logoUrl)}" width="140" height="54" alt="${escapeHtml(o.siteName)}" style="display:block;width:140px;height:auto;border:0;">`
+          : escapeHtml(o.siteName)
+      }</a>
     </td></tr>
     <tr><td style="background:${c.surface};border-radius:20px;padding:28px 28px 24px;">
       <p style="margin:0 0 6px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:${c.muted};font-family:Arial,Helvetica,sans-serif;">${escapeHtml(o.eyebrow)}</p>
