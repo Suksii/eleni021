@@ -52,17 +52,43 @@ export function emailLayout(o: EmailLayoutOptions): string {
 </html>`;
 }
 
-/** Tabela „oznaka → vrednost“ (oba već escapovana). */
+/** Tabela „oznaka → vrednost“ (oba već escapovana). Oznake su kratke, pa je
+ *  kolona uska i fiksna; vrednost se prelama — radi i na 320px širine. */
 export function rows(items: Array<[label: string, value: string]>): string {
   return `<table role="presentation" cellspacing="0" cellpadding="0" style="width:100%;border-top:1px solid ${COLORS.border};margin:12px 0;">
 ${items
   .map(
     ([label, value]) => `  <tr>
-    <td style="padding:8px 12px 8px 0;border-bottom:1px solid ${COLORS.border};color:${COLORS.muted};white-space:nowrap;vertical-align:top;">${label}</td>
-    <td style="padding:8px 0;border-bottom:1px solid ${COLORS.border};vertical-align:top;">${value}</td>
+    <td style="width:104px;padding:8px 12px 8px 0;border-bottom:1px solid ${COLORS.border};color:${COLORS.muted};vertical-align:top;">${label}</td>
+    <td style="padding:8px 0;border-bottom:1px solid ${COLORS.border};vertical-align:top;word-break:break-word;">${value}</td>
   </tr>`,
   )
   .join("\n")}
+</table>`;
+}
+
+export interface LineItem {
+  /** Već escapovan naziv. */
+  name: string;
+  /** Već escapovan opis ispod naziva, npr. „2 kg × 3.200 din.“ */
+  detail: string;
+  /** Već escapovan iznos. */
+  amount: string;
+}
+
+/** Stavke narudžbe: naziv (prelama se) + opis levo, iznos desno u jednom redu. */
+export function lineItems(items: LineItem[], total: string): string {
+  const row = (left: string, right: string, strong = false) => `  <tr>
+    <td style="padding:10px 12px 10px 0;border-bottom:1px solid ${COLORS.border};vertical-align:top;${strong ? "font-weight:700;" : ""}">${left}</td>
+    <td style="padding:10px 0;border-bottom:1px solid ${COLORS.border};vertical-align:top;text-align:right;white-space:nowrap;font-weight:700;">${right}</td>
+  </tr>`;
+  return `<table role="presentation" cellspacing="0" cellpadding="0" style="width:100%;margin:12px 0;">
+${items
+  .map((it) =>
+    row(`${it.name}<br><span style="color:${COLORS.muted};font-size:13px;">${it.detail}</span>`, it.amount),
+  )
+  .join("\n")}
+${row("Ukupno", total, true)}
 </table>`;
 }
 

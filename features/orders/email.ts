@@ -1,6 +1,6 @@
 import type { Order } from "@/db/schema";
 import { getSettings, type SiteSettings } from "@/features/site/api/getSettings";
-import { button, emailLayout, escapeHtml, rows } from "@/lib/email/layout";
+import { button, emailLayout, escapeHtml, lineItems, rows } from "@/lib/email/layout";
 import { sendEmail, type EmailMessage } from "@/lib/email/send";
 import { formatDate } from "@/lib/utils/formatDate";
 import { formatPrice } from "@/lib/utils/formatPrice";
@@ -17,15 +17,14 @@ function siteUrl() {
 }
 
 function itemsHtml(o: OrderForEmail): string {
-  return rows([
-    ...o.items.map(
-      (it): [string, string] => [
-        escapeHtml(it.name),
-        `${it.quantity} ${UNIT_LABEL[it.unit]} × ${escapeHtml(formatPrice(it.price))} = <strong>${escapeHtml(formatPrice(it.price * it.quantity))}</strong>`,
-      ],
-    ),
-    ["<strong>Ukupno</strong>", `<strong>${escapeHtml(formatPrice(o.total))}</strong>`],
-  ]);
+  return lineItems(
+    o.items.map((it) => ({
+      name: escapeHtml(it.name),
+      detail: `${it.quantity} ${UNIT_LABEL[it.unit]} × ${escapeHtml(formatPrice(it.price))}`,
+      amount: escapeHtml(formatPrice(it.price * it.quantity)),
+    })),
+    escapeHtml(formatPrice(o.total)),
+  );
 }
 
 function itemsText(o: OrderForEmail): string {
