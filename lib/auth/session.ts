@@ -1,8 +1,10 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { adminUsers, type AdminRole } from "@/db/schema";
 import { env } from "@/lib/env";
-import type { AdminRole } from "@/db/schema";
 
 export const SESSION_COOKIE = "admin_session";
 const SESSION_DAYS = 7;
@@ -63,9 +65,16 @@ export async function requireSession(): Promise<AdminSession> {
   return session;
 }
 
+// Uloga se čita iz baze, ne iz JWT-a: sesija traje 7 dana, a promena uloge
+// (ili brisanje naloga) mora da važi odmah.
+export async function getRole(userId: number): Promise<AdminRole | null> {
+  const [u] = await db.select({ role: adminUsers.role }).from(adminUsers).where(eq(adminUsers.id, userId)).limit(1);
+  return u?.role ?? null;
+}
+
 // Samo vlasnik sajta (programer): statistika i slično što klijent ne vidi.
 export async function requireOwner(): Promise<AdminSession> {
   const session = await requireSession();
-  if (session.role !== "owner") throw new Error("Nemate pristup.");
-  return session;
+  if ((await getRole(session.userId)) !== "owner") throw new Error("Nemate pristup.");
+  return { ...session, role: "owner" };
 }

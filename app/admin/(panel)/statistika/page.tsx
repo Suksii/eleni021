@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AdminHeader, Card, Empty, StatusBadge } from "@/features/admin/components/AdminPage";
 import { Table, Td, Th } from "@/features/admin/components/Table";
 import { CHANNELS, getStats, type Channel } from "@/features/admin/api/stats";
-import { getSession } from "@/lib/auth/session";
+import { getRole, getSession } from "@/lib/auth/session";
 import { formatDate } from "@/lib/utils/formatDate";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -26,7 +26,7 @@ function splitPath(p: string): { path: string; where: string } {
 export default async function StatsPage() {
   // Samo vlasnik sajta — klijent ne vidi ni link ni stranicu.
   const session = await getSession();
-  if (session?.role !== "owner") notFound();
+  if (!session || (await getRole(session.userId)) !== "owner") notFound();
 
   const { periods, recent } = await getStats();
 

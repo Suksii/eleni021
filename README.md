@@ -73,8 +73,8 @@ podešavanja (`phone`, `viber`, `whatsapp`; prazno = kanal se ne nudi). Vercel W
 (`features/admin/api/stats.ts`): klikovi na kontakt po kanalu i periodu, narudžbe i upiti po
 periodu, poslednjih 100 klikova sa vremenom. Klikovi se upisuju u tabelu `events` kroz javnu
 akciju `logEvent` (anonimno: kanal, putanja, vreme) iz `lib/track.ts` / `TrackLink`.
-Novi nalog za klijenta: `insert into admin_users (email, name, password_hash, role)` sa
-hash-om iz `lib/auth/password.ts` (`hashPassword`), role `admin`.
+Nalozi iz `.env`: `ADMIN_*` = klijent (admin), `OWNER_*` = programer (owner); seed ih kreira
+ako ne postoje. Uloga se proverava iz baze pri svakom zahtevu (sesija može biti stara).
 
 ### Prijava u admin
 

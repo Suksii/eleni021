@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { neon } from "@neondatabase/serverless";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { hashPassword } from "../lib/auth/password";
 import * as schema from "./schema";
@@ -183,13 +184,18 @@ async function main() {
     }).map(([key, value]) => ({ key, value })),
   );
 
-  const [admin] = await db.select().from(schema.adminUsers).limit(1);
-  if (!admin) await db.insert(schema.adminUsers).values({
-    email: process.env.ADMIN_EMAIL ?? "admin@eleni.me",
-    name: "Administrator",
-    passwordHash: await hashPassword(process.env.ADMIN_PASSWORD ?? "change-me"),
-    role: "owner",
-  });
+  // ADMIN_* = nalog klijenta (CMS), OWNER_* = nalog programera (vidi i Statistiku).
+  const accounts: { email?: string; password?: string; name: string; role: schema.AdminRole }[] = [
+    { email: process.env.ADMIN_EMAIL, password: process.env.ADMIN_PASSWORD, name: "Eleni", role: "admin" },
+    { email: process.env.OWNER_EMAIL, password: process.env.OWNER_PASSWORD, name: "Vlasnik", role: "owner" },
+  ];
+  for (const a of accounts) {
+    if (!a.email || !a.password) continue;
+    const email = a.email.toLowerCase();
+    const [existing] = await db.select().from(schema.adminUsers).where(eq(schema.adminUsers.email, email)).limit(1);
+    if (existing) continue;
+    await db.insert(schema.adminUsers).values({ email, name: a.name, passwordHash: await hashPassword(a.password), role: a.role });
+  }
 
   console.log("Seed završen.");
   // Dev server (ako radi) drži keš na disku — obavesti ga da su tagovi istekli.
