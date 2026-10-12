@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { track } from "@vercel/analytics";
+import { trackContact, type ContactChannel } from "@/lib/track";
 import { MessageCircle, Phone, X } from "lucide-react";
 import { ViberIcon, WhatsAppIcon } from "@/features/shared/components/icons/Social";
 import { telHref, viberHref, whatsappHref } from "@/lib/utils/phone";
@@ -39,15 +39,15 @@ export default function ContactFab({ phone, viber, whatsapp }: ContactFabProps) 
   }, [open]);
 
   const items = [
-    whatsapp && { key: "whatsapp", label: "WhatsApp", href: whatsappHref(whatsapp, WA_TEXT), Icon: WhatsAppIcon, cls: "bg-[#25d366] text-white" },
-    viber && { key: "viber", label: "Viber", href: viberHref(viber), Icon: ViberIcon, cls: "bg-[#7360f2] text-white" },
-    phone && { key: "poziv", label: `Pozovi ${phone}`, href: telHref(phone), Icon: Phone, cls: "bg-primary text-white" },
+    whatsapp && { key: "whatsapp" as const, label: "WhatsApp", href: whatsappHref(whatsapp, WA_TEXT), Icon: WhatsAppIcon, cls: "bg-[#25d366] text-white" },
+    viber && { key: "viber" as const, label: "Viber", href: viberHref(viber), Icon: ViberIcon, cls: "bg-[#7360f2] text-white" },
+    phone && { key: "poziv" as const, label: `Pozovi ${phone}`, href: telHref(phone), Icon: Phone, cls: "bg-primary text-white" },
   ].filter((i): i is Exclude<typeof i, "" | false> => Boolean(i));
 
   if (items.length === 0 || pathname.startsWith("/narudzba")) return null;
 
-  const choose = (key: string) => {
-    track("kontakt", { kanal: key, mesto: pathname });
+  const choose = (key: ContactChannel) => {
+    trackContact(key, "dugme");
     setOpen(false);
   };
 

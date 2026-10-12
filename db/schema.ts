@@ -166,11 +166,29 @@ export const inquiries = pgTable("inquiries", {
   ...timestamps,
 });
 
+// "owner" = programer/vlasnik sajta (vidi i Statistiku), "admin" = klijent (CMS).
+export const ADMIN_ROLES = ["admin", "owner"] as const;
+export type AdminRole = (typeof ADMIN_ROLES)[number];
+
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
   passwordHash: text("password_hash").notNull(),
+  role: text("role").$type<AdminRole>().notNull().default("admin"),
+  createdAt: timestamps.createdAt,
+});
+
+// Anonimni događaji sa sajta (klik na poziv/Viber/WhatsApp…): samo šta, odakle
+// i kada — ništa o osobi. Prikaz u /admin/statistika (samo owner).
+export const EVENT_NAMES = ["kontakt"] as const;
+export type EventName = (typeof EVENT_NAMES)[number];
+
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
+  name: text("name").$type<EventName>().notNull(),
+  channel: text("channel").notNull().default(""),
+  path: text("path").notNull().default(""),
   createdAt: timestamps.createdAt,
 });
 
@@ -191,3 +209,4 @@ export type Testimonial = typeof testimonials.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type AdminUser = typeof adminUsers.$inferSelect;
+export type SiteEvent = typeof events.$inferSelect;

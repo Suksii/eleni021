@@ -11,6 +11,7 @@ import Drawer from "@/features/shared/components/ui/Drawer";
 import { InstagramIcon } from "@/features/shared/components/icons/Social";
 import { NAV_LINKS } from "@/config/site.config";
 import { cn } from "@/lib/utils/cn";
+import { trackContact } from "@/lib/track";
 
 export interface NavCategory {
   id: number;
@@ -163,6 +164,7 @@ export default function HeaderBar({
             {telHref && (
               <a
                 href={telHref}
+                onClick={() => trackContact("poziv", "header")}
                 className="text-foreground/80 hover:text-primary hidden items-center gap-2 pr-2 text-sm font-semibold transition-colors xl:flex"
               >
                 <Phone size={15} aria-hidden="true" />
@@ -253,6 +255,7 @@ export default function HeaderBar({
             {telHref && (
               <a
                 href={telHref}
+                onClick={() => trackContact("poziv", "header")}
                 className="text-primary inline-flex items-center gap-2 text-base font-semibold"
               >
                 <Phone size={18} aria-hidden="true" /> {phone}

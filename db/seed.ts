@@ -188,6 +188,7 @@ async function main() {
     email: process.env.ADMIN_EMAIL ?? "admin@eleni.me",
     name: "Administrator",
     passwordHash: await hashPassword(process.env.ADMIN_PASSWORD ?? "change-me"),
+    role: "owner",
   });
 
   console.log("Seed završen.");

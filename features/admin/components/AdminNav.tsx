@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Cake, ExternalLink, Images, Inbox, LayoutDashboard, LogOut, MessageSquareQuote,
+  BarChart3, Cake, ExternalLink, Images, Inbox, LayoutDashboard, LogOut, MessageSquareQuote,
   Settings, ShoppingBag, Tags, UtensilsCrossed,
 } from "lucide-react";
 import { logout } from "@/features/admin/actions/auth";
@@ -21,12 +21,16 @@ const LINKS = [
   { href: "/admin/podesavanja", label: "Podešavanja", icon: Settings },
 ];
 
-export default function AdminNav({ badges, userName }: { badges: { orders: number; inquiries: number }; userName: string }) {
+// Samo za ulogu "owner" (programer) — klijent ne vidi.
+const OWNER_LINKS = [{ href: "/admin/statistika", label: "Statistika", icon: BarChart3, exact: false }];
+
+export default function AdminNav({ badges, userName, isOwner }: { badges: { orders: number; inquiries: number }; userName: string; isOwner: boolean }) {
   const pathname = usePathname();
+  const links = isOwner ? [...LINKS, ...OWNER_LINKS] : LINKS;
   return (
     <nav aria-label="Administracija" className="flex h-full flex-col">
       <ul className="flex gap-1 overflow-x-auto p-2 lg:flex-col lg:overflow-visible lg:p-3">
-        {LINKS.map(({ href, label, icon: Icon, exact }) => {
+        {links.map(({ href, label, icon: Icon, exact }) => {
           const active = exact ? pathname === href : pathname.startsWith(href);
           const badge = href === "/admin/narudzbe" ? badges.orders : href === "/admin/upiti" ? badges.inquiries : 0;
           return (

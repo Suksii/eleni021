@@ -10,7 +10,7 @@ async function Gate({ children }: { children: React.ReactNode }) {
   if (!session) redirect("/admin/prijava");
   const badges = await getNewCounts();
   return (
-    <AdminShell badges={badges} userName={session.name || session.email}>
+    <AdminShell badges={badges} userName={session.name || session.email} isOwner={session.role === "owner"}>
       {children}
     </AdminShell>
   );

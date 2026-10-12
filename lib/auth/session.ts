@@ -2,6 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import { env } from "@/lib/env";
+import type { AdminRole } from "@/db/schema";
 
 export const SESSION_COOKIE = "admin_session";
 const SESSION_DAYS = 7;
@@ -10,6 +11,7 @@ export interface AdminSession {
   userId: number;
   email: string;
   name: string;
+  role: AdminRole;
 }
 
 const secret = () => new TextEncoder().encode(env.authSecret);
@@ -47,6 +49,7 @@ export async function getSession(): Promise<AdminSession | null> {
       userId: payload.userId,
       email: String(payload.email ?? ""),
       name: String(payload.name ?? ""),
+      role: payload.role === "owner" ? "owner" : "admin",
     };
   } catch {
     return null;
@@ -57,5 +60,12 @@ export async function getSession(): Promise<AdminSession | null> {
 export async function requireSession(): Promise<AdminSession> {
   const session = await getSession();
   if (!session) throw new Error("Niste prijavljeni.");
+  return session;
+}
+
+// Samo vlasnik sajta (programer): statistika i slično što klijent ne vidi.
+export async function requireOwner(): Promise<AdminSession> {
+  const session = await requireSession();
+  if (session.role !== "owner") throw new Error("Nemate pristup.");
   return session;
 }

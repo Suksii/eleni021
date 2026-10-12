@@ -7,10 +7,12 @@ export default function AdminShell({
   children,
   badges,
   userName,
+  isOwner,
 }: {
   children: React.ReactNode;
   badges: { orders: number; inquiries: number };
   userName: string;
+  isOwner: boolean;
 }) {
   return (
     <div className="bg-surface-2 flex min-h-dvh flex-col lg:flex-row">
@@ -22,7 +24,7 @@ export default function AdminShell({
           </form>
         </div>
         <div className="lg:h-[calc(100dvh-4.1rem)]">
-          <AdminNav badges={badges} userName={userName} />
+          <AdminNav badges={badges} userName={userName} isOwner={isOwner} />
         </div>
       </aside>
       <main className="min-w-0 flex-1 p-4 md:p-8">{children}</main>

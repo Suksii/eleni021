@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "@/features/shared/components/icons/Social";
+import TrackLink from "@/features/shared/components/ui/TrackLink";
+import { telHref } from "@/lib/utils/phone";
 import Logo from "@/features/shared/components/layout/Logo";
 import CurrentYear from "@/features/shared/components/layout/CurrentYear";
 import { getSettings } from "@/features/site/api/getSettings";
@@ -73,10 +75,10 @@ export default async function Footer() {
               <li className="flex gap-2.5"><MapPin size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" />{s.address}</li>
             )}
             {s.phone && (
-              <li className="flex gap-2.5"><Phone size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" /><a href={`tel:${s.phone.replace(/\s/g, "")}`} className={LINK}>{s.phone}</a></li>
+              <li className="flex gap-2.5"><Phone size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" /><TrackLink channel="poziv" where="footer" href={telHref(s.phone)} className={LINK}>{s.phone}</TrackLink></li>
             )}
             {s.email && (
-              <li className="flex gap-2.5"><Mail size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" /><a href={`mailto:${s.email}`} className={LINK}>{s.email}</a></li>
+              <li className="flex gap-2.5"><Mail size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" /><TrackLink channel="email" where="footer" href={`mailto:${s.email}`} className={LINK}>{s.email}</TrackLink></li>
             )}
             {s.workingHours && (
               <li className="flex gap-2.5"><Clock size={17} aria-hidden="true" className="text-accent mt-0.5 shrink-0" />{s.workingHours}</li>

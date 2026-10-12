@@ -67,6 +67,15 @@ podešavanja (`phone`, `viber`, `whatsapp`; prazno = kanal se ne nudi). Vercel W
 (`<Analytics />` u root layoutu, bez kolačića) beleži događaje `kontakt` (kanal, mesto),
 `narudzba` (iznos) i `upit` (tip); izveštaj je u Vercel panelu projekta.
 
+### Uloge i statistika (samo vlasnik)
+
+`admin_users.role`: `owner` (programer) ili `admin` (klijent). Owner vidi i `/admin/statistika`
+(`features/admin/api/stats.ts`): klikovi na kontakt po kanalu i periodu, narudžbe i upiti po
+periodu, poslednjih 100 klikova sa vremenom. Klikovi se upisuju u tabelu `events` kroz javnu
+akciju `logEvent` (anonimno: kanal, putanja, vreme) iz `lib/track.ts` / `TrackLink`.
+Novi nalog za klijenta: `insert into admin_users (email, name, password_hash, role)` sa
+hash-om iz `lib/auth/password.ts` (`hashPassword`), role `admin`.
+
 ### Prijava u admin
 
 Posle 5 neuspešnih pokušaja (po IP-u ili po emailu) u 15 minuta prijava je blokirana

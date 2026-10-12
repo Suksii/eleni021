@@ -70,6 +70,8 @@ Pravila:
 - `proxy.ts` redirektuje `/admin/*` bez cookie-ja na `/admin/prijava?next=…`;
   pravi guard je `getSession()` u `app/admin/(panel)/layout.tsx`.
 - **Svaka admin server akcija** i upload ruta zovu `requireSession()`/`getSession()`.
+- Uloge: `admin_users.role` = `owner` | `admin`; u JWT-u. `requireOwner()` za vlasničke stvari;
+  `/admin/statistika` i link u navigaciji samo za owner-a (klijent ne vidi).
 - Ograničenje prijave: `lib/auth/loginAttempts.ts` + tabela `login_attempts` — 5 neuspešnih
   pokušaja (po IP-u ili emailu) u 15 min → blok 15 min. U bazi jer je Vercel serverless.
 

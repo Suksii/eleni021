@@ -38,7 +38,7 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   }
 
   await clearFailures(keys);
-  await createSession({ userId: user.id, email: user.email, name: user.name });
+  await createSession({ userId: user.id, email: user.email, name: user.name, role: user.role });
 
   // Samo relativna putanja unutar admina — bez open redirect-a.
   const target = next && /^\/admin(\/|$)/.test(next) ? next : "/admin";
