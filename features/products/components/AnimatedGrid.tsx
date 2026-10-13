@@ -21,6 +21,7 @@ export default function AnimatedGrid({ children, className }: { children: ReactN
       {items.map((child, i) => (
         <motion.div
           key={(child as { key?: string | number }).key ?? i}
+          className="min-w-0"
           variants={{
             hidden: { opacity: 0, y: 24, scale: 0.98 },
             show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },

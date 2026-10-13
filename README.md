@@ -76,6 +76,13 @@ akciju `logEvent` (anonimno: kanal, putanja, vreme) iz `lib/track.ts` / `TrackLi
 Nalozi iz `.env`: `ADMIN_*` = klijent (admin), `OWNER_*` = programer (owner); seed ih kreira
 ako ne postoje. Uloga se proverava iz baze pri svakom zahtevu (sesija može biti stara).
 
+### Provera na širini telefona
+
+`node scripts/mobile-check.mjs http://localhost:3000/proizvodi 390 [shot.png]` — otvara stranicu
+u headless Chrome-u sa emulacijom telefona (390px) i ispisuje elemente šire od ekrana
+(uzrok horizontalnog skrola / preklapanja), uz opcioni screenshot cele strane.
+Napomena: `google-chrome --headless --window-size=390,…` BEZ emulacije daje lažan overflow.
+
 ### Prijava u admin
 
 Posle 5 neuspešnih pokušaja (po IP-u ili po emailu) u 15 minuta prijava je blokirana

@@ -21,7 +21,7 @@ export default function ProductCard({
 }) {
   const href = `/proizvod/${product.slug}`;
   return (
-    <article className={cn("group relative flex flex-col", className)}>
+    <article className={cn("group relative flex min-w-0 flex-col", className)}>
       <div className={cn("bg-surface-2 relative aspect-[4/5] overflow-hidden rounded-lg", imageClassName)}>
         <Link href={href} tabIndex={-1} aria-hidden="true" className="absolute inset-0">
           {product.images[0] && (
@@ -40,14 +40,17 @@ export default function ProductCard({
         </div>
       </div>
       <div className="pt-3.5">
-        <div className="flex items-baseline">
-          <h3 className="font-display text-[1.1rem] leading-snug font-medium">
+        {/* Na uskim ekranima (2 kolone na telefonu) naziv i cena idu jedno ispod
+            drugog — u jednom redu bi dugačka reč ("Čokoladna") gurala cenu u
+            susednu karticu i širila celu stranicu. Tačkasti vodič samo od sm. */}
+        <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline">
+          <h3 className="font-display min-w-0 text-[1.1rem] leading-snug font-medium break-words">
             <Link href={href} className="after:absolute after:inset-0 after:z-0 after:content-['']">
               {product.name}
             </Link>
           </h3>
-          <span aria-hidden="true" className="leaders" />
-          <span className="font-display shrink-0 text-[1.05rem] tabular-nums">
+          <span aria-hidden="true" className="leaders hidden sm:block" />
+          <span className="font-display text-[1.05rem] tabular-nums sm:shrink-0">
             {formatPrice(product.price)}
             <span className="text-muted text-xs"> / {UNIT_LABEL[product.unit]}</span>
           </span>
